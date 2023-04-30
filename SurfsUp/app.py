@@ -95,5 +95,37 @@ def stations():
     # Close session
     session.close()
 
+
+@app.route("/api/v1.0/tobs")
+def tobs():
+    # Start session
+    session = Session(engine)
+
+    # Find most active station
+    station_counts = []
+    
+    for station in station_names:
+        number_rows = session.query(measurement.station).filter(measurement.station == station).count()
+        station_counts.append(number_rows)
+    
+    active_stations_df = pd.DataFrame({"station": station_names,
+                                   "number of rows": station_counts})
+    
+    active_stations_df = active_stations_df.sort_values("number of rows",ascending=False)
+    active_stations_df = active_stations_df.reset_index(drop=True)
+      
+    # Query DB to retrieve last 12 months data
+    last_12_months = session.query(measurement.tobs).filter(measurement.station == active_stations_df["station"][0]).filter(measurement.date >= date_one_year).filter(measurement.date <= recent_date_clean)
+    
+    temp_list = [x[0] for x in last_12_months]
+
+    # Jsonify
+    return jsonify(temp_list)
+    
+    # Close session
+    session.close()
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
