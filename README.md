@@ -9,9 +9,6 @@ For this assignment, I have been asked to:
 ## Content
 
 In this repository, you will find:
-- Resources folder: ...;
-- Result folder: containing ...
+- Resources folder: containing the hawaii.sqlite database and two csv files with the same data;
+- SurfsUp folder: containing the climate_starter.ipynb file with the code for the first part of the assignment and app.py with the code for the second part of the assignment. 
 
-## Result
-
-- ...
